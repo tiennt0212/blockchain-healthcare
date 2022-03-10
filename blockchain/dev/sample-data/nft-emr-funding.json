@@ -1,0 +1,23 @@
+{
+  "owner": [
+    {
+      "id": "id_of_TIEN",
+      "time": "28/02/2022"
+    }
+  ],
+  "type": "ONLY-ACTIVE",
+  "data": ["Same as nft-emr"],
+  "stake": {
+    "active": [
+      {
+        "id": "id_1",
+        "value": "20"
+      },
+      {
+        "id": "id_2",
+        "value": "20"
+      }
+    ],
+    "passive": [null]
+  }
+}

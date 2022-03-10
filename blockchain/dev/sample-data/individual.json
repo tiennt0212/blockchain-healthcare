@@ -1,0 +1,13 @@
+{
+  "info": {
+    "name": "Nguyen Thanh Tien",
+    "date_of_birth": "02/12/2000",
+    "gender": "Male",
+    "address": "Phu Yen"
+  },
+  "status": {
+    "wallet": 5000
+  },
+  "medals": [],
+  "connections": []
+}

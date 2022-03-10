@@ -1,0 +1,14 @@
+{
+  "owner": [
+    {
+      "id": "id_of_TIEN",
+      "time": "28/02/2022Z06:30:00"
+    },
+    {
+      "id": "id_of_DH_Y_Duoc",
+      "time": "01/03/2022Z12:20:00"
+    }
+  ],
+  "price": "20",
+  "data": ["Only a part of the health record at current"]
+}

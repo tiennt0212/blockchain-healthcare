@@ -1,0 +1,23 @@
+{
+  "owner": [
+    {
+      "id": "id_of_TIEN",
+      "time": "28/02/2022"
+    }
+  ],
+  "type": "ONLY-ACTIVE / MULTIPLE",
+  "data": ["Infomation about Project / Research"],
+  "stake": {
+    "active": [
+      {
+        "id": "id_1",
+        "value": "20"
+      },
+      {
+        "id": "id_2",
+        "value": "20"
+      }
+    ],
+    "passive": ["id_1", "id_2"]
+  }
+}

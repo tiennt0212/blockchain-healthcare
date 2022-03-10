@@ -1,0 +1,15 @@
+
+
+
+NFT type:
+ONLY-ACTIVE
+  Use case: Individual / Health-facilitity / Organization create a Fractional NFT (know as certificate)
+  Note: Not allow 3rd parties receive this NFT, only direct entities can get it
+
+MULTIPLE
+  Use case: Organization create a Fractional NFT (know as certificate)
+  Note: Allow both direct entities and 3rd partires receive this NFT.
+
+ONE-TIME:
+  Use case: Individual sell their data via NFT, and this NFT cannot pass to any-entity.
+  Note: Only allow

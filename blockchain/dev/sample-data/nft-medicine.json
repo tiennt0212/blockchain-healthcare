@@ -1,0 +1,14 @@
+{
+  "owner": [
+    {
+      "id": "id_of_TIEN",
+      "time": "28/02/2022"
+    },
+    {
+      "id": "id_of_DH_Y_Duoc",
+      "time": "01/03/2022"
+    }
+  ],
+  "price": "20",
+  "data": ["All data of medicine record"]
+}
