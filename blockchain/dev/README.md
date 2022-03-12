@@ -48,3 +48,9 @@ pip3 install sawtooth_sdk
 ## Install Sawtooth
 
 Ref: https://sawtooth.hyperledger.org/docs/1.2/app_developers_guide/installing_sawtooth.html#step-1-install-sawtooth
+
+## IPFS
+**IPFS Core API:** https://docs.ipfs.io/reference/http/api/#getting-started
+**IPFS Build Private Network:** https://blockcast.cc/news/teach-you-how-to-build-an-ipfs-private-network/
+**IPFS Cluster:** https://github.com/ipfs/ipfs-cluster
+**IPFS Cluster Architecture:** https://cluster.ipfs.io/documentation/deployment/architecture/
