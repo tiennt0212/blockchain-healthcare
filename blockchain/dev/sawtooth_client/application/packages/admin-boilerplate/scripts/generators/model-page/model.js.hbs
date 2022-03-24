@@ -1,0 +1,88 @@
+import { notification } from 'antd';
+import { f2Qp } from 'utils/f2Qp';
+import { URL_SERVER_HOST } from 'utils/constants';
+import { handleError } from 'utils/handleError';
+import { axiosConfigHeader } from 'utils/axiosConfig';
+import axios from 'axios';
+
+const {{camelCase model}}Model = {
+  name: '{{camelCase model}}Model',
+  state: {
+    {{camelCase model}}: [],
+    pagination: {
+      total: 0,
+      page: 1,
+      pageSize: 10,
+    },
+    filterOptions: '',
+  },
+  reducers: {
+    set{{properCase model}}(state, { data, pagination, filterOptions }) {
+      return {
+        ...state,
+        {{camelCase model}}: data,
+        pagination,
+        filterOptions,
+      };
+    },
+  },
+  effects: () => ({
+    async fetch{{properCase model}}(payload, state) {
+      const { pagination, filterOptions } = state.{{camelCase model}}Model;
+       const { page, pageSize, filterOptions: filterPayload } = { ...pagination, ...payload };
+      const queryFilter = filterPayload ? filterPayload : filterOptions;
+      try {
+        const response = await axios.get(
+        `${URL_SERVER_HOST}/{{kebabCase model}}?${f2Qp(queryFilter)}&page=${page}&pageSize=${pageSize}&_sort=id:ASC`,
+        axiosConfigHeader(),
+        );
+        this.set{{properCase model}}({ ...response.data, filterOptions: queryFilter });
+      } catch (err) {
+        handleError(err, 'Fetch data failed');
+      }
+    },
+    async create(payload) {
+      try {
+        await axios.post(`${URL_SERVER_HOST}/{{kebabCase model}}`, payload, axiosConfigHeader());
+        notification.success({
+          message: 'Successfully create item!',
+        });
+      } catch (err) {
+        handleError(err, 'Create failed');
+      }
+    },
+    async update(payload) {
+      try {
+        await axios.put(`${URL_SERVER_HOST}/{{kebabCase model}}/${payload.id}`, payload, axiosConfigHeader());
+        notification.success({
+          message: 'Successfully update item!',
+        });
+      } catch (err) {
+        handleError(err, 'Update failed');
+      }
+    },
+    async delete(id, state) {
+      try {
+        await axios.delete(`${URL_SERVER_HOST}/{{kebabCase model}}/${id}`, axiosConfigHeader());
+
+      const { page, pageSize, total } = state.{{camelCase model}}Model.pagination;
+
+        // check for deleting the last item of the last page AND not in the first page
+        if (total - pageSize * (page - 1) < 2 && page !== 1) {
+          this.fetch{{properCase model}}({ page: page - 1 });
+        } else {
+          this.fetch{{properCase model}}();
+        }
+
+        notification.success({
+          message: 'Success',
+          description: 'Successfully delete item!',
+        });
+      } catch (err) {
+        handleError(err, 'Delete failed');
+      }
+    },
+  }),
+};
+
+export default {{camelCase model}}Model;

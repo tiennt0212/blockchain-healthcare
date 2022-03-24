@@ -1,0 +1,102 @@
+import { init } from '@rematch/core';
+import {{camelCase model}}Model from '../{{camelCase model}}Model';
+import { URL_SERVER_HOST } from 'utils/constants';
+
+import axios from 'axios';
+
+const axiosConfigHeader = {
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8',
+    Authorization: `Bearer ${JSON.parse(localStorage.getItem('jwt'))}`,
+  },
+};
+
+describe('{{camelCase model}}Model', () => {
+  describe('reducers', () => {
+    it('add', () => {
+      const store = init({
+        models: { {{camelCase model}}Model },
+      });
+
+      const nObj = {};
+
+      store.dispatch.{{camelCase model}}Model.add(nObj);
+
+      expect(store.getState().{{camelCase model}}Model).toEqual({
+        {{camelCase model}}: [nObj],
+      });
+    });
+
+    it('remove', () => {
+      {{camelCase model}}Model.state.{{camelCase model}} = [{ id: 1 }, { id: 2 }];
+
+      const store = init({
+        models: { {{camelCase model}}Model },
+      });
+
+      store.dispatch.{{camelCase model}}Model.remove(2);
+
+      expect(store.getState().{{camelCase model}}Model).toEqual({
+        {{camelCase model}}: [{ id: 1 }],
+      });
+    });
+
+    it('edit', () => {
+      {{camelCase model}}Model.state.{{camelCase model}} = [
+        { id: 1, name: 'n 1' },
+        { id: 2, name: 'n 2' },
+      ];
+
+      const store = init({
+        models: { {{camelCase model}}Model },
+      });
+
+      store.dispatch.{{camelCase model}}Model.edit({ id: 2, name: 'n 2 edited' });
+
+      expect(store.getState().{{camelCase model}}Model).toEqual({
+        {{camelCase model}}: [
+          { id: 1, name: 'n 1' },
+          { id: 2, name: 'n 2 edited' },
+        ],
+      });
+    });
+  });
+
+  describe('effects', () => {
+    it('create', async () => {
+      const store = init({
+        models: { {{camelCase model}}Model },
+      });
+      const spyAdd = jest.spyOn(store.dispatch.{{camelCase model}}Model, 'add');
+      const nObj = {};
+      await store.dispatch.{{camelCase model}}Model.create(nObj);
+
+      expect(axios.post).toBeCalledWith(`${URL_SERVER_HOST}/{{kebabCase model}}`, nObj, axiosConfigHeader);
+      expect(spyAdd).toBeCalledWith(nObj);
+    });
+
+    it('update', async () => {
+      const store = init({
+        models: { {{camelCase model}}Model },
+      });
+      const spy = jest.spyOn(store.dispatch.{{camelCase model}}Model, 'edit');
+      const nObj = {};
+      await store.dispatch.{{camelCase model}}Model.update(nObj);
+
+      expect(axios.put).toBeCalledWith(`${URL_SERVER_HOST}/{{kebabCase model}}/${nObj.id}`, nObj, axiosConfigHeader);
+      expect(spy).toBeCalledWith(nObj);
+    });
+
+    it('delete', async () => {
+      const store = init({
+        models: { {{camelCase model}}Model },
+      });
+      const spy = jest.spyOn(store.dispatch.{{camelCase model}}Model, 'remove');
+      const id = 1;
+      await store.dispatch.{{camelCase model}}Model.delete(id);
+
+      expect(axios.delete).toBeCalledWith(`${URL_SERVER_HOST}/{{kebabCase model}}/${id}`, axiosConfigHeader);
+      expect(spy).toBeCalledWith(id);
+    });
+  });
+});

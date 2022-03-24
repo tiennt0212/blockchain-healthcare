@@ -1,0 +1,60 @@
+.dark {
+  @import '~antd/dist/antd.dark.less';
+  background-color: #000000;
+  
+  .ant-input-affix-wrapper > input.ant-input:focus,
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    box-shadow: 0 0 0 50px #000000 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+  }
+
+  .logo h1 {
+    color: #fff;
+  }
+
+  .ant-form {
+    margin: auto;
+  }
+
+  .ant-card {
+    margin: 24px;
+  }
+
+  .ant-menu-item-selected a,
+  .ant-menu-item-selected a:hover {
+    color: #e6f7ff;
+  }
+
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    background-color: transparent;
+    border: 1px solid #434343;
+  }
+
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #177ddc;
+
+    .anticon {
+      color: #e6f7ff;
+    }
+  }
+
+  .ant-menu-item:hover {
+    color: #177ddc;
+  }
+
+  .ant-empty-description {
+    color: #666;
+  }
+
+  .ant-result {
+    background-color: #000000;
+  }
+}

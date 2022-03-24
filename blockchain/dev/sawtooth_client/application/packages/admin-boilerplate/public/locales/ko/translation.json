@@ -1,0 +1,67 @@
+{
+  "breadcrum": {
+    "home": ""
+  },
+  "dropdown": {
+    "logout": "",
+    "my_profile": "",
+    "setting": ""
+  },
+  "filter_box": {
+    "apply": "",
+    "clear_all": "",
+    "filters": "",
+    "hide": ""
+  },
+  "footer": {
+    "created_by": ""
+  },
+  "home": {
+    "page_title": ""
+  },
+  "login": {
+    "page_title": "",
+    "title": ""
+  },
+  "login_form": {
+    "forgot_password": "",
+    "input_password": "",
+    "input_username": "",
+    "log_in": "",
+    "or": "",
+    "password_placeholder": "",
+    "register_now": "",
+    "remember_me": "",
+    "username_placeholder": ""
+  },
+  "not_found_page": {
+    "back_home": "",
+    "description": "",
+    "page_title": "",
+    "title": ""
+  },
+  "notification": {
+    "file_upload_failed": "",
+    "file_upload_success": ""
+  },
+  "status": {
+    "contains": "",
+    "contains_case_sensitive": "",
+    "equal": "",
+    "is_greater_than": "",
+    "is_greater_than_or_equal_to": "",
+    "is_less_than": "",
+    "is_less_than_or_equal_to": "",
+    "not_equal": ""
+  },
+  "table": {
+    "reset": "",
+    "search": ""
+  },
+  "total_counter": {
+    "entries_found": ""
+  },
+  "validation": {
+    "maximum_image_size": ""
+  }
+}

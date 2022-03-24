@@ -1,0 +1,67 @@
+{
+  "breadcrum": {
+    "home": "Home"
+  },
+  "dropdown": {
+    "logout": "Logout",
+    "my_profile": "My Profile",
+    "setting": "Setting"
+  },
+  "filter_box": {
+    "apply": "Apply",
+    "clear_all": "Clear all",
+    "filters": "Filters",
+    "hide": "Hide"
+  },
+  "footer": {
+    "created_by": "Created by"
+  },
+  "home": {
+    "page_title": "Home Page"
+  },
+  "login": {
+    "page_title": "Login",
+    "title": "Login"
+  },
+  "login_form": {
+    "forgot_password": "Forgot password",
+    "input_password": "Please input your Password!",
+    "input_username": "Please input your Username!",
+    "log_in": "Log in",
+    "or": "Or",
+    "password_placeholder": "Password",
+    "register_now": "register now!",
+    "remember_me": "Remember me",
+    "username_placeholder": "Username"
+  },
+  "not_found_page": {
+    "back_home": "Back Home",
+    "description": "Sorry, the page you visited does not exist.",
+    "page_title": "Page Not Found",
+    "title": "404"
+  },
+  "notification": {
+    "file_upload_failed": "File upload failed",
+    "file_upload_success": "File uploaded successfully"
+  },
+  "status": {
+    "contains": "contains",
+    "contains_case_sensitive": "contains (case sensitive)",
+    "equal": "equal",
+    "is_greater_than": "is greater than",
+    "is_greater_than_or_equal_to": "is greater than or equal to",
+    "is_less_than": "is less than",
+    "is_less_than_or_equal_to": "is less than or equal to",
+    "not_equal": "not equal"
+  },
+  "table": {
+    "reset": "Reset",
+    "search": "Search"
+  },
+  "total_counter": {
+    "entries_found": "entries found"
+  },
+  "validation": {
+    "maximum_image_size": "Image must smaller than 10MB!"
+  }
+}

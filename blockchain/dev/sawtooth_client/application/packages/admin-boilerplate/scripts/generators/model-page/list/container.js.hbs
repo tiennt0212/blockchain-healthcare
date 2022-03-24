@@ -1,0 +1,126 @@
+import { useEffect } from 'react';
+import { Layout } from 'components/Layout';
+import { useTranslation } from 'react-i18next';
+import { Spin } from 'antd';
+{{#each attr}}{{#if datetime}}import dayjs from 'utils/extendedDayjs';{{/if}}{{/each}}
+
+import { Table } from 'components/Table';
+import { useDispatch, useSelector } from 'hooks';
+import { TitlePage } from 'components/TitlePage';
+import { FilterBox } from 'components/FilterBox';
+import { TotalCounter } from 'components/TotalCounter';
+import { TableActions } from 'components/TableActions';
+{{#each attr}}{{#if file}}import { ImageGroup } from 'components/ImageGroup';{{/if}}{{/each}}
+{{#each attr}}{{#if boolean}}import { Checkbox } from 'antd';{{/if}}{{/each}}
+import ATTRIBUTES from 'containers/{{properCase name}}/attributes';
+import { Helmet } from 'react-helmet-async';
+
+import {{camelCase model}}Model from './{{camelCase model}}Model';
+import { addStoreModel } from 'utils/addStoreModel';
+import { ROUTES } from 'utils/routeConstants';
+import { getSpecificAttributes, generateFiltersInfo } from 'utils/app';
+
+addStoreModel({{camelCase model}}Model);
+
+const breadcrumbItems = [
+  { title: '{{sentenceCase name}}', link: ROUTES.{{constantCase name}}_LIST },
+  { title: 'List', link: ROUTES.{{constantCase name}}_LIST },
+];
+
+const {{properCase name}}List = ({ history }) => {
+  const { t } = useTranslation();
+
+  const { delete{{properCase model}}, fetch{{properCase model}} } = useDispatch(({ {{camelCase model}}Model }) => ({
+    delete{{properCase model}}: {{camelCase model}}Model.delete,
+    fetch{{properCase model}}: {{camelCase model}}Model.fetch{{properCase model}},
+  }));
+
+  const { {{camelCase model}}, pagination, filterOptions, loading } = useSelector(
+    ({ {{camelCase model}}Model: { {{camelCase model}}, pagination, filterOptions }, loading }) => ({
+      {{camelCase model}},
+      pagination,
+      filterOptions,
+      loading: loading.global,
+    }),
+  );
+
+  const { total, page } = pagination;
+
+  const onChangePagination = (page, pageSize) => {
+    fetch{{properCase model}}({ page, pageSize });
+  }
+
+  const onChangeFilter = (formFilter) => {
+    fetch{{properCase model}}({ page: 1, filterOptions: formFilter.filters });
+  };
+
+  useEffect(() => {
+    fetch{{properCase model}}();
+  }, [fetch{{properCase model}}]);
+
+  const columns = [
+    {{#each attr}}
+    {
+      title: t('{{camelCase ../name}}.{{attr_name}}', '{{titleCase attr_name}}'),
+      key: '{{attr_name}}',
+      {{#if displayField}}
+      render: (_, record) => record['{{attr_name}}']?.['{{displayField}}'] || '',
+      {{else}}{{#if file}}
+      // eslint-disable-next-line react/display-name
+      render: (_, record) => <ImageGroup images={record['{{attr_name}}']} />,
+      {{else}}{{#if boolean}}
+      // eslint-disable-next-line react/display-name
+      render: (_,record) => <Checkbox defaultChecked={record['{{attr_name}}']} disabled />,
+      {{else}}{{#if datetime}}
+      render: (_, record) =>
+        record['{{attr_name}}'] ? dayjs(record['{{attr_name}}']).format('MMMM D, YYYY h:mm A') : '',
+      {{else}}
+      dataIndex: '{{attr_name}}',
+      {{/if}}
+      {{/if}}
+      {{/if}}
+      {{/if}}
+    },
+    {{/each}}
+    {
+      title: t('table.action', 'Action'),
+      align: 'right',
+      // eslint-disable-next-line react/display-name
+      render: (v, i) => (
+        <TableActions 
+          onDelete={() => delete{{properCase model}}(i.id)}
+          onEdit={() => history.push(`${{curly true}}ROUTES.EDIT_{{constantCase name}}{{curly}}?id=${encodeURIComponent(i.id)}`)}
+        />
+      ),
+    },
+  ];
+
+  return (
+    <Layout breadcrumbItems={breadcrumbItems} >
+      <Helmet>
+        <title>{t('{{camelCase name}}.page_title', '{{properCase name}} Page')}</title>
+      </Helmet>
+      <Spin tip="Loading..." spinning={loading}>
+        <TitlePage titleText='{{sentenceCase name}} List' />
+        <TotalCounter total={total} />
+        <FilterBox
+          filterInfos={generateFiltersInfo(getSpecificAttributes(ATTRIBUTES, 'filter'))}
+          handleSubmit={onChangeFilter}
+          defaultFilterData={filterOptions}
+        />
+        <Table
+          columns={columns}
+          dataSource={{curly true}}{{camelCase model}}{{curly}}
+          total={total}
+          current={page}
+          multiSelect
+          onPageChange={onChangePagination}
+          sticky
+          rowKey="id"
+        />
+      </Spin>
+    </Layout>
+  );
+};
+
+export default {{properCase name}}List;

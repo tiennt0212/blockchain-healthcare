@@ -1,0 +1,240 @@
+import { useEffect, useState } from 'react';
+import { Form, Button, Spin } from 'antd';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
+import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
+import pluralize from 'pluralize';
+import dayjs from 'utils/extendedDayjs';
+
+import { TitlePage } from 'components/TitlePage';
+import { Layout } from 'components/Layout';
+import {{camelCase model}}Model from 'containers/{{properCase name}}/List/{{camelCase model}}Model';
+import ATTRIBUTES from 'containers/{{properCase name}}/attributes';
+import { useDispatch, useSelector } from 'hooks';
+
+import { ROUTES } from 'utils/routeConstants';
+import { getSpecificAttributes, generateFormInfo, handleRenderInput } from 'utils/app';
+import { addStoreModel } from 'utils/addStoreModel';
+import { URL_SERVER_HOST, COLLECTION_TYPES, DATE_TIME_FORMAT } from 'utils/constants';
+import { handleError } from 'utils/handleError';
+import { axiosConfigHeader } from 'utils/axiosConfig';
+
+const { Item } = Form;
+const queryString = require('query-string');
+
+addStoreModel({{camelCase model}}Model);
+
+const breadcrumbItems = (isEditPage) => [
+  { title: '{{sentenceCase name}}', link: ROUTES.{{constantCase name}}_LIST },
+  isEditPage 
+    ? { 
+        title: 'Edit', 
+        link:  ROUTES.EDIT_{{constantCase name}}, 
+      }
+    : { 
+        title: 'Create', 
+        link:  ROUTES.CREATE_{{constantCase name}}, 
+      },
+];
+
+const StyledForm = styled(Form)`
+  margin: auto;
+  max-width: 400px;
+`;
+
+const formItemLayout = {
+    labelCol: {
+      span: 24,
+    },
+    wrapperCol: {
+      span: 24,
+    },
+};
+
+const {{properCase formContainer}} = ({location}) => {
+  const { t } = useTranslation();
+  const parsed = queryString.parse(location.search);
+  const isEditPage = location.pathname === ROUTES.EDIT_{{constantCase name}};
+  const { id } = parsed;
+  const [form] = Form.useForm();
+  const [{{camelCase name}}InfoById, set{{properCase name}}InfoById] = useState({});
+  const [formData, setFormData] = useState({});
+  const loading = useSelector((state) => state.loading.global);
+
+  const {{camelCase name}}Attributes = generateFormInfo(
+    getSpecificAttributes(ATTRIBUTES, isEditPage ? 'edit' : 'create'),
+  );
+
+  const arrModelName = {{camelCase name}}Attributes
+    .filter((item) => item.type === 'model' || item.type === 'collection')
+    .map((item) => item[item.type]);
+
+  useEffect(() => {
+    if (!isEditPage) {
+      form.resetFields();
+    }
+    const get{{properCase name}}ById = async (id) => {
+      try {
+        const response = await axios.get(`${URL_SERVER_HOST}/{{kebabCase model}}/${id}`, axiosConfigHeader());
+        set{{properCase name}}InfoById(response.data);
+        const initialFormData = Object.entries(response.data)
+          .map((subData) => {
+            const typeOfKey = {{camelCase name}}Attributes.find((info) => info.attribute === subData[0])?.type;
+            if (COLLECTION_TYPES.DATE.includes(typeOfKey) && subData[1]) {
+              // Format date/time to corresponding object
+              return {
+                [subData[0]]:
+                  typeOfKey == 'datetime'
+                    ? dayjs(subData[1]).utc(true) // because the returned datetime is UTC, no formatting needed
+                    : dayjs(subData[1], DATE_TIME_FORMAT[typeOfKey]),
+              };
+            } else if (COLLECTION_TYPES.RELATIONAL.includes(typeOfKey) && subData[1]) {
+              // Keep only displayField of this object(s)
+              const displayField = {{camelCase name}}Attributes.find((attr) => attr.attribute === subData[0])
+                ?.displayField;
+              return typeOfKey == 'model'
+                ? { [subData[0]]: subData[1][displayField] }
+                : { [subData[0]]: subData[1].map((item) => item[displayField]) };
+            } else {
+              return { [subData[0]]: subData[1] };
+            }
+          })
+          .reduce((previous, current) => Object.assign(previous, current), {});
+
+        form.setFieldsValue({ ...initialFormData });
+      } catch (err) {
+        handleError(err, 'Fetch data failed');
+      }
+    };
+    if (isEditPage) {
+      get{{properCase name}}ById(id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, isEditPage, id]);
+
+  const { add{{properCase model}}, update{{properCase model}} } = useDispatch(({ {{camelCase model}}Model }) => ({
+    add{{properCase model}}: {{camelCase model}}Model.create,
+    update{{properCase model}}: {{camelCase model}}Model.update,
+  }));
+
+  const [pageSize, setPageSize] = useState({
+    initialLimit: 10,
+    modelName: '',
+  });
+
+  useEffect(() => {
+    const getRelationModelList = async () => {
+      try {
+        const obj = {};
+        if (pageSize.modelName) {
+          arrModelName.forEach(async (item) => {
+            if (item === pageSize.modelName) {
+              const response = await axios.get(
+                `${URL_SERVER_HOST}/${pluralize(item)}?&pageSize=${
+                  pageSize[`${item}Quantity`]
+                }&_sort=id:ASC`,
+                axiosConfigHeader(),
+              );
+              obj[`${item}`] = response?.data?.data;
+              obj[`${item}Total`] = response?.data?.pagination.total;
+              setFormData({ ...formData, ...obj });
+            }
+          });
+        } else {
+          arrModelName.forEach(async (item) => {
+            const response = await axios.get(
+              `${URL_SERVER_HOST}/${pluralize(item)}?&pageSize=${
+                pageSize.initialLimit
+              }&_sort=id:ASC`,
+              axiosConfigHeader(),
+            );
+            obj[`${item}`] = response?.data?.data;
+            obj[`${item}Total`] = response?.data?.pagination.total;
+            setFormData({ ...formData, ...obj });
+          });
+        }
+      } catch (err) {
+        handleError(err, 'Fetch data failed');
+      }
+    };
+    if (!isEditPage || isEditPage) {
+      getRelationModelList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditPage, pageSize]);
+
+  const onFinish = (values) => {
+    const changeValue = () => {
+      {{camelCase name}}Attributes.forEach((subInfo) => {
+        const { attribute: attrToFind, type, displayField } = subInfo || {};
+        if (COLLECTION_TYPES.RELATIONAL.includes(type)) {
+          const largeData =
+            formData[{{camelCase name}}Attributes.find((attr) => attr.attribute === attrToFind)[type]];
+          const valueToFind = values[attrToFind];
+          // Keep only id of this object(s)
+          values[attrToFind] =
+            type === 'model'
+              ? largeData?.find((subData) => subData[displayField] === valueToFind)?.id
+              : valueToFind.map(
+                  (subValue) =>
+                    largeData?.find((subData) => subData[displayField] === subValue)?.id,
+                );
+        } else if (COLLECTION_TYPES.DATE.includes(type)) {
+          const oldValue = values[attrToFind];
+          values[attrToFind] = dayjs(oldValue).format(DATE_TIME_FORMAT[type]);
+        }
+      });
+    };
+    if (isEditPage) {
+      changeValue();
+      update{{properCase model}}({
+        ...{{camelCase name}}InfoById,
+        ...values,
+      });
+    } else {
+      changeValue();
+      add{{properCase model}}({
+        ...values,
+      });
+      form.resetFields();
+    }
+  };
+  return (
+    <Layout breadcrumbItems={breadcrumbItems(isEditPage)} >
+      <Helmet>
+        {isEditPage ? (
+          <title>{t('{{camelCase name}}.page_title_edit', 'Edit {{properCase name}}')}</title>
+        ) : (
+          <title>{t('{{camelCase name}}.page_title_create', 'Create New {{properCase name}}')}</title>
+        )}
+      </Helmet>
+      <Spin tip="Loading..." spinning={loading}>
+        <TitlePage titleText={isEditPage ? 'Edit {{sentenceCase name}}' : 'Create {{sentenceCase name}}'} align='center' />
+        <StyledForm {...formItemLayout} form={form} name='{{camelCase name}}' onFinish={onFinish} >
+            { {{camelCase name}}Attributes?.map((item, index) => (
+                <Item name={item.attribute} label={item.attribute} key={index} rules={[{ required: true, message: t('form.required', 'Required'),},]}>
+                  {handleRenderInput(
+                    item.attribute,
+                    {{camelCase name}}Attributes,
+                    formData,
+                    { form },
+                    setPageSize,
+                    pageSize,
+                    item.model,
+                    item.collection,
+                  )}
+                </Item>
+            ))}
+            <Item>
+              <Button type="primary" htmlType="submit">
+                {isEditPage ? t('form.update', 'Update') : t('form.create', 'Create')}
+              </Button>
+            </Item>
+        </StyledForm>
+      </Spin>
+    </Layout>
+  );
+};
+
+export default {{properCase formContainer}};
