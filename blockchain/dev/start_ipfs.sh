@@ -1,6 +1,7 @@
 compose_ipfs="./test.yaml"
 data_ipfs="./compose"
-ipfs_image="ipfs/go-ipfs:latest"
+ipfs_image="ipfs/go-ipfs:v0.7.0"
+cluster_image="ipfs/ipfs-cluster:latest"
 cluster_secret="NEITHNAHT"
 ########## STEP 1 ###############
 ####### Make docker-compose file #########
@@ -26,7 +27,7 @@ echo "services:
 
   cluster0:
     container_name: cluster0
-    image: ipfs/ipfs-cluster:latest
+    image: $cluster_image
     depends_on:
       - ipfs0
     environment:
@@ -64,7 +65,7 @@ while true; do
 
   cluster$number:
     container_name: cluster$number
-    image: ipfs/ipfs-cluster:latest
+    image: $cluster_image
     depends_on:
       - ipfs$number
     environment:
