@@ -16,13 +16,7 @@
 This SimpleWalletClient class interfaces with Sawtooth through the REST API.
 '''
 
-import hashlib
-import base64
-import random
-import requests
-import yaml
-
-from sawtooth_signing import create_context
+from sawtooth_client.simplewallet.wallet.sawtooth import create_context
 from sawtooth_signing import CryptoFactory
 from sawtooth_signing import ParseError
 from sawtooth_signing.secp256k1 import Secp256k1PrivateKey
@@ -33,8 +27,15 @@ from sawtooth_sdk.protobuf.batch_pb2 import BatchList
 from sawtooth_sdk.protobuf.batch_pb2 import BatchHeader
 from sawtooth_sdk.protobuf.batch_pb2 import Batch
 
+import hashlib
+import base64
+import random
+import requests
+import yaml
+
 # The Transaction Family Name
 FAMILY_NAME = 'simplewallet'
+
 
 def _hash(data):
     return hashlib.sha512(data).hexdigest()
@@ -65,24 +66,34 @@ class SimpleWalletClient(object):
             raise Exception('Failed to read private key {}: {}'.format(
                 keyFile, str(err)))
 
+        print('1', privateKeyStr)
+
         try:
             privateKey = Secp256k1PrivateKey.from_hex(privateKeyStr)
         except ParseError as err:
             raise Exception('Failed to load private key: {}'.format(str(err)))
 
+        print('2', privateKey)
+
         self._signer = CryptoFactory(create_context('secp256k1')) \
             .new_signer(privateKey)
 
+        print('3', self._signer)
+
         self._publicKey = self._signer.get_public_key().as_hex()
 
+        print('4', self._publicKey)
         self._address = _hash(FAMILY_NAME.encode('utf-8'))[0:6] + \
             _hash(self._publicKey.encode('utf-8'))[0:64]
+
+        print('5', self._address)
 
     # For each valid cli command in _cli.py file,
     # add methods to:
     # 1. Do any additional handling, if required
     # 2. Create a transaction and a batch
     # 2. Send to rest-api
+
     def deposit(self, value):
         return self._wrap_and_send(
             "deposit",
@@ -111,13 +122,13 @@ class SimpleWalletClient(object):
         except Exception as err:
             raise Exception('Encountered an error during transfer', err)
         return retValue
-    
+
     def ipfs_store(self, data, client):
         try:
             with open(client) as fd:
                 publicKeyStr = fd.read().strip()
             retValue = self._wrap_and_send(
-                "transfer",
+                "ipfs_store",
                 data,
                 publicKeyStr)
         except OSError as err:
@@ -175,9 +186,9 @@ class SimpleWalletClient(object):
                        action,
                        *values):
         '''Create a transaction, then wrap it in a batch.     
-                                                              
+
            Even single transactions must be wrapped into a batch.
-        ''' 
+        '''
 
         # Generate a csv utf-8 encoded string as payload
         rawPayload = action
@@ -194,7 +205,7 @@ class SimpleWalletClient(object):
 
         if "transfer" == action:
             toAddress = _hash(FAMILY_NAME.encode('utf-8'))[0:6] + \
-            _hash(values[1].encode('utf-8'))[0:64]
+                _hash(values[1].encode('utf-8'))[0:64]
             inputAddressList.append(toAddress)
             outputAddressList.append(toAddress)
 
@@ -226,13 +237,13 @@ class SimpleWalletClient(object):
             transaction_ids=[txn.header_signature for txn in transactionList]
         ).SerializeToString()
 
-        #Create Batch using the BatchHeader and transactionList above
+        # Create Batch using the BatchHeader and transactionList above
         batch = Batch(
             header=header,
             transactions=transactionList,
             header_signature=self._signer.sign(header))
 
-        #Create a Batch List from Batch above
+        # Create a Batch List from Batch above
         batch_list = BatchList(batches=[batch])
 
         # Send batch_list to rest-api
