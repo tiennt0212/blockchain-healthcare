@@ -1,18 +1,26 @@
-const { createHash } = require('crypto');
-const { CryptoFactory, createContext } = require('sawtooth-sdk/signing');
-const protobuf = require('sawtooth-sdk/protobuf');
-const fs = require('fs');
-const fetch = require('node-fetch');
-const { Secp256k1PrivateKey } = require('sawtooth-sdk/signing/secp256k1');
-const { TextEncoder, TextDecoder } = require('text-encoding/lib/encoding');
+// const { createHash } = require('crypto');
+// const { CryptoFactory, createContext } = require('sawtooth-sdk/signing');
+// const protobuf = require('sawtooth-sdk/protobuf');
+// const fetch = require('node-fetch');
+// const { Secp256k1PrivateKey } = require('sawtooth-sdk/signing/secp256k1');
+// const { TextEncoder } = require('text-encoding/lib/encoding');
+import { createHash } from 'crypto';
+import { CryptoFactory, createContext } from 'sawtooth-sdk/signing';
+import protobuf from 'sawtooth-sdk/protobuf';
+import { Secp256k1PrivateKey } from 'sawtooth-sdk/signing/secp256k1';
+import { TextEncoder } from 'text-encoding/lib/encoding';
+// import * as fs from 'fs';
+import * as fetch from 'node-fetch';
 
-FAMILY_NAME = 'simplewallet';
+// FAMILY_NAME = 'simplewallet';
+
+const REST_API_ENDPOINT = 'http://0.0.0.0:8080/http://172.18.0.5:8008';
 
 function hash(v) {
   return createHash('sha512').update(v).digest('hex');
 }
 
-class SimpleWalletClient {
+export default class {
   constructor(userid) {
     const privateKeyStrBuf = this.getUserPriKey(userid);
     const privateKeyStr = privateKeyStrBuf.toString().trim();
@@ -42,17 +50,19 @@ class SimpleWalletClient {
   }
 
   getUserPriKey(userid) {
-    console.log(userid);
-    console.log('Current working directory is: ' + process.cwd());
-    var userprivkeyfile = '/home/thanhtien/.sawtooth/keys/' + userid + '.priv';
-    return fs.readFileSync(userprivkeyfile);
+    // console.log(userid);
+    // console.log('Current working directory is: ' + process.cwd());
+    // var userprivkeyfile = '/home/thanhtien/.sawtooth/keys/' + userid + '.priv';
+    // return fs.readFileSync(userprivkeyfile);
+    return sessionStorage.getItem(`privKey-${userid}`);
   }
 
   getUserPubKey(userid) {
-    console.log(userid);
-    console.log('Current working directory is: ' + process.cwd());
-    var userpubkeyfile = '/home/thanhtien/.sawtooth/keys/' + userid + '.pub';
-    return fs.readFileSync(userpubkeyfile);
+    // console.log(userid);
+    // console.log('Current working directory is: ' + process.cwd());
+    // var userpubkeyfile = '/home/thanhtien/.sawtooth/keys/' + userid + '.pub';
+    // return fs.readFileSync(userpubkeyfile, 'utf-8');
+    return sessionStorage.getItem(`pubKey-${userid}`);
   }
 
   _wrap_and_send(action, values) {
@@ -108,11 +118,15 @@ class SimpleWalletClient {
 
   _send_to_rest_api(batchListBytes) {
     if (batchListBytes == null) {
-      var geturl = 'http://172.18.0.4:8008/state/' + this.address;
+      var geturl = `${REST_API_ENDPOINT}/state/` + this.address;
       console.log('Getting from: ' + geturl);
-      return fetch(geturl, {
-        method: 'GET',
-      })
+      return fetch(
+        geturl,
+        {
+          method: 'GET',
+        },
+        { mode: 'no-cors' },
+      )
         .then((response) => response.json())
         .then((responseJson) => {
           var data = responseJson.data;
@@ -123,7 +137,7 @@ class SimpleWalletClient {
           console.error(error);
         });
     } else {
-      fetch('http://172.18.0.4:8008/batches', {
+      fetch(`${REST_API_ENDPOINT}/batches`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/octet-stream',
@@ -140,4 +154,3 @@ class SimpleWalletClient {
     }
   }
 }
-module.exports.SimpleWalletClient = SimpleWalletClient;

@@ -34,7 +34,7 @@ RUN echo "deb [arch=amd64] http://repo.sawtooth.me/ubuntu/ci bionic universe" >>
   && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-  && apt-get install -y nodejs
+  && apt-get install -y nodejsz
 
 WORKDIR /project/simplewallet/jsclient
 

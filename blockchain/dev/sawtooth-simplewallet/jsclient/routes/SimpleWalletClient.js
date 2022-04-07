@@ -127,7 +127,7 @@ class SimpleWalletClient {
 
   _send_to_rest_api(batchListBytes) {
     if (batchListBytes == null) {
-      var geturl = "http://172.18.0.4:8008/state/" + this.address;
+      var geturl = "http://172.18.0.5:8008/state/" + this.address;
       console.log("Getting from: " + geturl);
       return fetch(geturl, {
         method: "GET",
@@ -142,7 +142,7 @@ class SimpleWalletClient {
           console.error(error);
         });
     } else {
-      fetch("http://172.18.0.4:8008/batches", {
+      fetch("http://172.18.0.5:8008/batches", {
         method: "POST",
         headers: {
           "Content-Type": "application/octet-stream",

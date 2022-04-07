@@ -199,6 +199,13 @@
     "webpack": "4.44.2",
     "webpack-dev-server": "3.11.0",
     "webpack-manifest-plugin": "2.2.0",
-    "workbox-webpack-plugin": "5.1.4"
+    "workbox-webpack-plugin": "5.1.4",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "sawtooth-sdk": "^1.0.2",
+    "text-encoding": "^0.6.4",
+    "fs": "0.0.1-security",
+    "node-fetch": "^2.1.2"
   }
 }

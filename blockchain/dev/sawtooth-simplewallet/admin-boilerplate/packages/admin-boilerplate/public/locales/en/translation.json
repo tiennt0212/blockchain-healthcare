@@ -2,6 +2,11 @@
   "breadcrum": {
     "home": "Home"
   },
+  "confirmation": {
+    "message": "Are you sure to delete?",
+    "no": "No",
+    "yes": "Yes"
+  },
   "dropdown": {
     "logout": "Logout",
     "my_profile": "My Profile",
@@ -16,8 +21,23 @@
   "footer": {
     "created_by": "Created by"
   },
+  "form": {
+    "create": "Create",
+    "required": "Required",
+    "update": "Update"
+  },
+  "group": {
+    "page_title": "Group Page",
+    "page_title_create": "Create New Group",
+    "page_title_edit": "Edit Group"
+  },
   "home": {
     "page_title": "Home Page"
+  },
+  "item": {
+    "page_title": "Item Page",
+    "page_title_create": "Create New Item",
+    "page_title_edit": "Edit Item"
   },
   "login": {
     "page_title": "Login",
@@ -33,6 +53,12 @@
     "register_now": "register now!",
     "remember_me": "Remember me",
     "username_placeholder": "Username"
+  },
+  "media": {
+    "page_title": "Media Page",
+    "page_title_create": "Create New Media",
+    "page_title_edit": "Edit Media",
+    "url": "Url"
   },
   "not_found_page": {
     "back_home": "Back Home",
@@ -55,11 +81,15 @@
     "not_equal": "not equal"
   },
   "table": {
+    "action": "Action",
     "reset": "Reset",
     "search": "Search"
   },
   "total_counter": {
     "entries_found": "entries found"
+  },
+  "upload-field": {
+    "upload": "Upload"
   },
   "validation": {
     "maximum_image_size": "Image must smaller than 10MB!"

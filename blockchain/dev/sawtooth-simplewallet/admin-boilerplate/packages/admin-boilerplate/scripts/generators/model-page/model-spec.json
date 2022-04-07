@@ -10,7 +10,7 @@
       "draftAndPublish": true
     },
     "attributes": {
-      "name": { "type": "string", "maxLength": 128 },
+      "name": { "type": "string", "maxLength": 128, "show": true },
       "status": { "type": "enumeration", "enum": ["requesting", "accepted", "banned"] },
       "users_permissions_user": {
         "plugin": "users-permissions",
@@ -155,7 +155,11 @@
       "draftAndPublish": true
     },
     "attributes": {
-      "status": { "type": "enumeration", "enum": ["inviting", "requested", "accepted", "banned"] },
+      "status": {
+        "type": "enumeration",
+        "enum": ["inviting", "requested", "accepted", "banned"],
+        "show": true
+      },
       "user": { "plugin": "users-permissions", "model": "user", "via": "group_users" },
       "group": { "via": "group_users", "model": "group" },
       "published_at": { "type": "datetime", "configurable": false },
@@ -277,7 +281,7 @@
       "draftAndPublish": true
     },
     "attributes": {
-      "name": { "type": "string", "maxLength": 256 },
+      "name": { "type": "string", "maxLength": 256, "show": true },
       "type": { "type": "enumeration", "enum": ["direct", "private", "public"] },
       "group_users": { "collection": "group-user", "via": "group", "isVirtual": true },
       "gposts": { "collection": "posts", "via": "group", "isVirtual": true },
@@ -398,7 +402,7 @@
       "draftAndPublish": true
     },
     "attributes": {
-      "name": { "type": "string", "maxLength": 256, "required": true },
+      "name": { "type": "string", "maxLength": 256, "required": true, "show": true },
       "price": { "type": "biginteger", "required": true, "min": "0" },
       "desc": { "type": "richtext", "maxLength": 2048 },
       "expriry": { "type": "date" },
@@ -531,7 +535,7 @@
       "draftAndPublish": true
     },
     "attributes": {
-      "url": { "type": "string", "maxLength": 256 },
+      "url": { "type": "string", "maxLength": 256, "show": true },
       "type": { "type": "enumeration", "enum": ["video", "image"] },
       "item": { "model": "item", "via": "medias" },
       "published_at": { "type": "datetime", "configurable": false },
@@ -639,7 +643,7 @@
       "draftAndPublish": true
     },
     "attributes": {
-      "title": { "type": "string", "maxLength": 128 },
+      "title": { "type": "string", "maxLength": 128, "show": true },
       "body": { "type": "richtext", "maxLength": 2048 },
       "type": { "type": "enumeration", "enum": ["sale", "msg", "reply", "comment"] },
       "status": { "type": "enumeration", "enum": ["draft", "requesting", "approved", "removed"] },
