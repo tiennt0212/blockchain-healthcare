@@ -1,0 +1,14 @@
+# Docker compose for web app
+
+services:
+  web-app:
+    image: $WEBAPP_IMAGE
+    container_name: $WEBAPP_CONTAINER_NAME
+    expose:
+      - 3000
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - $WEBAPP_DIR:/admin-boilerplate
+    working_dir: /admin-boilerplate/packages/admin-boilerplate
+    entrypoint: "yarn start"

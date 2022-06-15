@@ -1,0 +1,10 @@
+# Docker compose for web app
+
+services:
+  jsprocessor:
+    image: STRANSACTION_PROCESSOR_IMAGE
+    container_name: $TRANSACTION_PROCESSOR_CONTAINER_NAME
+    volumes:
+      - $TRANSACTION_PROCESSOR_DIR:/processor
+    working_dir: /processor
+    entrypoint: "yarn start"

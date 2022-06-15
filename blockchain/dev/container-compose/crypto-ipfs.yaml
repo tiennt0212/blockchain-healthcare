@@ -1,0 +1,12 @@
+# Docker compose for IPFS and Cryptography
+
+services:
+  cryptoipfs:
+    image: $CRYPTO_IPFS_IMAGE
+    container_name: $CRYPTO_IPFS_CONTAINER_NAME
+    ports:
+      - "5000:5000"
+    volumes:
+      - $CRYPTO_IPFS_DIR:/home/charmcrypto/charm/charm-dev/HSEABE
+    working_dir: /home/charmcrypto/charm/charm-dev/HSEABE
+    entrypoint: "python3 crypto-ipfs.py"

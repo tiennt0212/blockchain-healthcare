@@ -1,0 +1,17 @@
+FROM charmabe:1.0
+
+RUN sudo apt update -y && sudo apt upgrade -y
+
+RUN sudo apt-get install wget -y
+
+RUN wget https://bootstrap.pypa.io/pip/3.4/get-pip.py
+
+RUN python3 get-pip.py 
+
+RUN pip3 install Flask
+
+RUN pip3 install ipfshttpclient
+
+RUN sudo apt-get install git -y
+
+RUN sudo pip3 install Crypto

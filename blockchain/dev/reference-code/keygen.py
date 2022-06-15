@@ -120,3 +120,11 @@ def do_keygen(args):
 
     except IOError as ioe:
         raise CliException('IOError: {}'.format(str(ioe))) from ioe
+
+
+def simplekeygen():
+    context = create_context('secp256k1')
+    private_key = context.new_random_private_key()
+    public_key = context.get_public_key(private_key)
+    print('priv', private_key)
+    print('pub', public_key)
