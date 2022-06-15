@@ -14,6 +14,7 @@ import { mediumSize, media } from 'components/Styles/Media';
 
 import { menuList } from 'utils/menu';
 import { PUBLIC_ROUTES, ROUTES } from 'utils/routeConstants';
+import { METAHEALTHID } from 'utils/constants';
 
 const { Content } = AtndLayout;
 
@@ -106,7 +107,11 @@ const FullLayout = ({ children, className, menuOpenedKey, menuSelectedKey }) => 
           </Drawer>
 
           <AtndLayout className="site-layout">
-            <Header toggleSidebar={() => setDrawerVisible(true)} items={items} userName="Admin" />
+            <Header
+              toggleSidebar={() => setDrawerVisible(true)}
+              items={items}
+              userName={localStorage.getItem(METAHEALTHID)}
+            />
             <div className="main-wrapper">
               <Content>
                 <SettingTheme />

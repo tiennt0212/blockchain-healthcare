@@ -12,6 +12,7 @@ import { Logo } from '../Logo';
 import { media } from '../Styles/Media';
 import { Dropdown } from '../Dropdown';
 import defaultAvatar from '../../assets/images/profile-img.png';
+import { useSelector } from 'hooks';
 
 const StyledHeader = styled(Layout.Header)`
   padding: 0px !important;
@@ -75,7 +76,9 @@ const StyledHeader = styled(Layout.Header)`
 `;
 
 const Header = ({ toggleSidebar = () => {}, items, userName }) => {
-  const { push } = useHistory();
+  const history = useHistory();
+  const isAuthenticated = useSelector((state) => state.authentication.isAuthenticated);
+
   return (
     <StyledHeader>
       <div className="admin-header-layout-side">
@@ -86,17 +89,20 @@ const Header = ({ toggleSidebar = () => {}, items, userName }) => {
           <MenuUnfoldOutlined onClick={toggleSidebar} />
         </div>
         <div className="right-side">
-          <span className="admin-header-index-action">
-            <Button type="primary" onClick={push('/login')}>
-              Getting Started
-            </Button>
-          </span>
-          <Dropdown items={items} fullWidthOnMobile>
+          {isAuthenticated ? (
+            <Dropdown items={items} fullWidthOnMobile>
+              <span className="admin-header-index-action">
+                <Avatar className="admin-avatar" src={defaultAvatar} size={24} />
+                {userName}
+              </span>
+            </Dropdown>
+          ) : (
             <span className="admin-header-index-action">
-              <Avatar className="admin-avatar" src={defaultAvatar} size={24} />
-              {userName}
+              <Button type="primary" onClick={() => history.push('/login')}>
+                Getting Started
+              </Button>
             </span>
-          </Dropdown>
+          )}
         </div>
       </div>
     </StyledHeader>

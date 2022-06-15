@@ -29,12 +29,14 @@ export const SignUp = () => {
       }}
       onFinish={async (values) => {
         values.dateOfBirth = dayjs(values.dateOfBirth).format('YYYY-MM-DD');
-        try {
-          await registerProfile(values);
-          setCanDownloadKey(true);
-        } catch (error) {
-          // Not console.log anymore
-        }
+        registerProfile(values);
+        setCanDownloadKey(true);
+        // try {
+        //   await registerProfile(values);
+        //   setCanDownloadKey(true);
+        // } catch (error) {
+        //   // Not console.log anymore
+        // }
       }}
     >
       <Item label="Full Name" name="fullName">

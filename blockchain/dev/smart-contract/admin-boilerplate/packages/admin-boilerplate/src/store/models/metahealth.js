@@ -9,7 +9,8 @@ import {
   BLOCKCHAIN_API_VIA_PROXY,
   PROXY_ENDPOINT,
 } from 'utils/constants';
-import { encryptABE, decryptABE } from 'store/services/Crypto';
+import { decryptABE } from 'store/services/Crypto';
+import { encryptABE } from 'store/services/Crypto';
 import { getJsonIPFS } from 'store/services/IPFS';
 import { encryptAttributesList, removeLocalStorageUser } from 'utils/app';
 // import { axiosConfigHeader } from 'utils/axiosConfig';
@@ -95,6 +96,7 @@ const metaHealth = {
         handleError(error, 'Some error occured');
         removeLocalStorageUser(randomID);
       }
+      // console.log(payload);
     },
     async getMetaData(id) {
       const address = new HealthPlus(id).getAddress();

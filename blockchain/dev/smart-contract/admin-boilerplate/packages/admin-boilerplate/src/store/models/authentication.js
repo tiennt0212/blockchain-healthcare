@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
-import { URL_SERVER_HOST, PRIVATE_KEY, PUBLIC_KEY } from 'utils/constants';
+import { URL_SERVER_HOST, PRIVATE_KEY, PUBLIC_KEY, METAHEALTHID } from 'utils/constants';
 import { isEmpty } from 'utils/app';
 
-const isAuthenticated = localStorage.getItem('jwt') ? true : false;
+const isAuthenticated = localStorage.getItem(METAHEALTHID) ? true : false;
 
 const authentication = {
   state: {
@@ -37,12 +37,14 @@ const authentication = {
           const localPub = `${PUBLIC_KEY}${metaHealthID}`;
           localStorage.setItem(localPriv, priv);
           localStorage.setItem(localPub, pub);
+          localStorage.setItem(METAHEALTHID, metaHealthID);
           if (localStorage.getItem(localPriv) && localStorage.getItem(localPub)) {
             this.setMetaHealthID(metaHealthID);
             this.setIsAuthenticated(true);
           } else {
             localStorage.removeItem(localPriv);
             localStorage.removeItem(localPub);
+            localStorage.removeItem(METAHEALTHID);
             this.setMetaHealthID(null);
             this.setIsAuthenticated(false);
           }

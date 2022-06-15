@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'hooks';
 import { Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
+import { PRIVATE_KEY, PUBLIC_KEY, METAHEALTHID } from 'utils/constants';
 
 const { Dragger } = Upload;
 const Wrapper = styled.div`
@@ -36,7 +37,9 @@ export const LoginForm = () => {
       return false;
     },
     onDrop: () => {
-      const isLoggedIn = localStorage.getItem('privKey') && localStorage.getItem('privKey');
+      const isLoggedIn =
+        localStorage.getItem(`${PRIVATE_KEY}${METAHEALTHID}`) &&
+        localStorage.getItem(`${PUBLIC_KEY}${METAHEALTHID}`);
       if (isLoggedIn) console.log('isLogged');
     },
   };
