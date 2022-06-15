@@ -1,8 +1,9 @@
 import styled from 'styled-components/macro';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'hooks';
 import { Redirect } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Spin, Button } from 'antd';
 
 import { Brand } from 'components/Brand';
 import { LoginForm } from './LoginForm';
@@ -23,17 +24,21 @@ const Wrapper = styled.div`
     padding: 0px 150px;
     display: flex;
     justify-content: space-between;
+    height: 60vh;
 
     h2 {
       text-align: center;
       margin-bottom: 40px;
     }
 
-    .form__sign-in {
-      flex-basis: 40%;
+    .form__sign-left {
+      flex-basis: 30%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
     }
 
-    .form__sign-up {
+    .form__sign-right {
       flex-basis: 60%;
     }
   }
@@ -42,7 +47,7 @@ const Wrapper = styled.div`
 const LoginPage = () => {
   const isAuthenticated = useSelector((state) => state.authentication.isAuthenticated);
   const loading = useSelector((state) => state.loading.global);
-
+  const [login, setLoginPage] = useState(true);
   if (isAuthenticated) return <Redirect to="/" />;
 
   return (
@@ -54,14 +59,13 @@ const LoginPage = () => {
         <Brand />
         <h1>Welcome to Health Plus</h1>
         <div className="form">
-          <div className="form__sign-in">
-            <h2>Import Key for Sign In</h2>
-            <LoginForm />
+          <div className="form__sign-left">
+            <Button type="primary" onClick={() => setLoginPage(true)}>
+              Import Key for Sign In
+            </Button>
+            <Button onClick={() => setLoginPage(false)}>Sign Up an account</Button>
           </div>
-          <div className="form__sign-up">
-            <h2> Sign Up Your Information</h2>
-            <SignUp />
-          </div>
+          <div className="form__sign-right">{login ? <LoginForm /> : <SignUp />}</div>
         </div>
       </Wrapper>
     </Spin>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import { URL_SERVER_HOST, PRIVATE_KEY, PUBLIC_KEY, METAHEALTHID } from 'utils/constants';
-import { isEmpty } from 'utils/app';
+import { isEmpty, removeLocalStorageUser } from 'utils/app';
 
 const isAuthenticated = localStorage.getItem(METAHEALTHID) ? true : false;
 
@@ -85,11 +85,11 @@ const authentication = {
         console.log(error);
       }
     },
-    async logout(_, rootState) {
+    async logout() {
       console.log('Logout');
       this.setIsAuthenticated(false);
-      localStorage.removeItem(`${PRIVATE_KEY}${rootState.authentication.metaHealthID}`);
-      localStorage.removeItem(`${PUBLIC_KEY}${rootState.authentication.metaHealthID}`);
+      const userID = localStorage.getItem(METAHEALTHID);
+      removeLocalStorageUser(userID);
       dispatch(push('/login'));
     },
   }),

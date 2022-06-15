@@ -7,8 +7,8 @@ import json
 # FILE API: https: // github.com/ipfs/js-ipfs/blob/master/docs/core-api/FILES.md
 
 # IPFS0 = '/ipv4/172.22.0.12/tcp/5001'
-IPFS_ENDPOINT = '/dns/172.22.0.5/tcp/5001/http'
-client = ipfshttpclient.connect(IPFS_ENDPOINT)
+IPFS_CONTAINER_ENDPOINT = '/dns/172.22.0.25/tcp/5001/http'
+client = ipfshttpclient.connect(IPFS_CONTAINER_ENDPOINT)
 
 app = Flask(__name__)
 

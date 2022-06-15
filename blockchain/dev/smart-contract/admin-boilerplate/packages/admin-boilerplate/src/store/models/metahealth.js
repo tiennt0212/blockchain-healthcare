@@ -25,14 +25,13 @@ const metaHealth = {
   state: initialValues,
   reducers: {
     setMetaHealth(state, payload) {
-      console.log(payload);
       return {
         ...state,
         ...payload,
       };
     },
   },
-  effects: () => ({
+  effects: (dispatch) => ({
     async registerProfile(payload) {
       const keyPair = new HealthPlus().genKeyPair();
       const { privKey } = keyPair;
@@ -76,7 +75,7 @@ const metaHealth = {
           },
         });
         // Wait 8s for batch status
-        await fetch(`${PROXY_ENDPOINT}/${res.link}&wait=8`)
+        return await fetch(`${PROXY_ENDPOINT}/${res.link}&wait=8`)
           .then((res) => res.json())
           .then((resJson) => {
             const batchStatus = resJson;
@@ -90,6 +89,8 @@ const metaHealth = {
             } else {
               removeLocalStorageUser(randomID);
             }
+            dispatch.authentication.setIsAuthenticated(true);
+            return resJson;
           });
       } catch (error) {
         console.log(error);
@@ -98,7 +99,7 @@ const metaHealth = {
       }
       // console.log(payload);
     },
-    async getMetaData(id) {
+    async getProfileData(id) {
       const address = new HealthPlus(id).getAddress();
       try {
         return await fetch(`${BLOCKCHAIN_API_VIA_PROXY}/state/${address}`)

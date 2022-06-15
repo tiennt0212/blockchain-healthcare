@@ -158,13 +158,13 @@ export const DATE_TIME_FORMAT = {
 };
 
 export const URL_SERVER_HOST = process.env.REACT_APP_SERVER;
-export const REST_API_ENDPOINT = 'http://172.22.0.11:8008';
-export const CRYPTO_ENDPOINT = 'http://172.22.0.1:5000';
-export const IPFS_ENDPOINT = 'http://192.168.199.151:5001';
+export const REST_API_ENDPOINT = 'http://172.22.0.4:8008';
+export const CRYPTO_ENDPOINT = 'http://172.22.0.2:5000';
+export const IPFS_FLASK_ENDPOINT = 'http://192.168.199.151:5001';
 export const PROXY_ENDPOINT = 'http://0.0.0.0:8080';
 export const BLOCKCHAIN_API_VIA_PROXY = `${PROXY_ENDPOINT}/${REST_API_ENDPOINT}`;
 export const CRYPTO_ENDPOINT_VIA_PROXY = `${PROXY_ENDPOINT}/${CRYPTO_ENDPOINT}`;
-export const IPFS_ENDPOINT_VIA_PROXY = `${PROXY_ENDPOINT}/${IPFS_ENDPOINT}`;
+export const IPFS_ENDPOINT_VIA_PROXY = `${PROXY_ENDPOINT}/${IPFS_FLASK_ENDPOINT}`;
 
 export const PRIVATE_KEY = 'privKey';
 export const PUBLIC_KEY = 'pubKey';

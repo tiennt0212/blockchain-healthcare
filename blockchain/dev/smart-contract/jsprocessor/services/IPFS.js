@@ -3,8 +3,8 @@
 
 import { create } from "ipfs-http-client";
 
-const IPFS_ENDPOINT = "http://172.18.0.7:5001";
-const client = create(IPFS_ENDPOINT);
+const IPFS_FLASK_ENDPOINT = "http://172.18.0.7:5001";
+const client = create(IPFS_FLASK_ENDPOINT);
 
 export const StoreData = (data) => {
   const rs = client.add("Hello world!");

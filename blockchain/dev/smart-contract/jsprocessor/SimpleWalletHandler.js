@@ -23,12 +23,12 @@ const SW_FAMILY = "simplewallet";
 var encoder = new TextEncoder("utf8");
 var decoder = new TextDecoder("utf8");
 const SW_NAMESPACE = hash(SW_FAMILY).substring(0, 6);
-const IPFS_ENDPOINT = "http://192.168.199.151:5001";
+const IPFS_FLASK_ENDPOINT = "http://192.168.199.151:5001";
 //function to obtain the payload obtained from the client
 
 const postIPFS = async (path, data) => {
   try {
-    const res = await axios.post(`${IPFS_ENDPOINT}${path}`, data);
+    const res = await axios.post(`${IPFS_FLASK_ENDPOINT}${path}`, data);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -37,7 +37,7 @@ const postIPFS = async (path, data) => {
 
 const getIPFS = async (path) => {
   try {
-    const res = await axios.get(`${IPFS_ENDPOINT}${path}`);
+    const res = await axios.get(`${IPFS_FLASK_ENDPOINT}${path}`);
     console.log(res);
   } catch (error) {
     console.log(error);

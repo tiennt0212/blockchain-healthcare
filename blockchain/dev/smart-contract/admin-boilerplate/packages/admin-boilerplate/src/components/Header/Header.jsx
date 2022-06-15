@@ -13,6 +13,8 @@ import { media } from '../Styles/Media';
 import { Dropdown } from '../Dropdown';
 import defaultAvatar from '../../assets/images/profile-img.png';
 import { useSelector } from 'hooks';
+// import { removeLocalStorageUser } from 'utils/app';
+// import { METAHEALTHID } from 'utils/constants';
 
 const StyledHeader = styled(Layout.Header)`
   padding: 0px !important;
@@ -98,7 +100,12 @@ const Header = ({ toggleSidebar = () => {}, items, userName }) => {
             </Dropdown>
           ) : (
             <span className="admin-header-index-action">
-              <Button type="primary" onClick={() => history.push('/login')}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  history.push('/login');
+                }}
+              >
                 Getting Started
               </Button>
             </span>

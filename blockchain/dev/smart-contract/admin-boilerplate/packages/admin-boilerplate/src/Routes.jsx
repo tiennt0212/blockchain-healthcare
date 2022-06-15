@@ -7,6 +7,7 @@ import { ProtectedRoute } from 'components/Routing';
 import { FullLayout } from 'components/Layout';
 import MediaPage from 'containers/Media/List';
 import CreateMedia from 'containers/Media/Form';
+import Profile from 'containers/Profile';
 
 function Routes() {
   return (
@@ -20,15 +21,15 @@ function Routes() {
           <ProtectedRoute path={ROUTES.REQUESTING} exact component={HomePage} />
           <ProtectedRoute path={ROUTES.PERSONALDATA} exact component={HomePage} />
           <ProtectedRoute path={ROUTES.METAHEALTH} exact component={HomePage} />
-          <ProtectedRoute path={ROUTES.PROFILE} exact component={HomePage} />
+          <ProtectedRoute path={ROUTES.PROFILE} exact component={Profile} />
           <ProtectedRoute path={ROUTES.MEDIA_LIST} exact component={MediaPage} />
           <ProtectedRoute path={ROUTES.CREATE_MEDIA} exact component={CreateMedia} />
           <ProtectedRoute path={ROUTES.EDIT_MEDIA} exact component={CreateMedia} />
+          <ProtectedRoute path={ROUTES.NFT_MARKETPLACE} exact component={HomePage} />
+          <ProtectedRoute path={ROUTES.HOMEPAGE} exact component={HomePage} />
           <Route path={ROUTES.DEV} exact component={HomePage} />
-          <Route path={ROUTES.NFT_MARKETPLACE} exact component={HomePage} />
           <Route path={ROUTES.LOGIN} exact component={LoginPage} />
           {/*REPLACE HOMEPAGE by NFT-marketplace route*/}
-          <Route path={ROUTES.HOMEPAGE} exact component={HomePage} />
           <Route path="*" component={NotFoundPage} />
         </Switch>
       </FullLayout>

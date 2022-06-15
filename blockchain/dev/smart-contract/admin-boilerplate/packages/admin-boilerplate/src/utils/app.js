@@ -282,9 +282,9 @@ const decryptAttributesList = (encryptedAttrList, key) => {
   return encryptedAttrList.map((encryptedAttr) => decrypt(encryptedAttr, key));
 };
 
-const removeLocalStorageUser = (randomID) => {
-  localStorage.removeItem(`${PRIVATE_KEY}${randomID}`);
-  localStorage.removeItem(`${PUBLIC_KEY}${randomID}`);
+const removeLocalStorageUser = (userID) => {
+  localStorage.removeItem(`${PRIVATE_KEY}${userID}`);
+  localStorage.removeItem(`${PUBLIC_KEY}${userID}`);
   localStorage.removeItem(METAHEALTHID);
 };
 

@@ -10,7 +10,7 @@ import { PRIVATE_KEY, PUBLIC_KEY, METAHEALTHID } from 'utils/constants';
 
 const { Dragger } = Upload;
 const Wrapper = styled.div`
-  height: 60%;
+  height: 100%;
   align-items: center;
 `;
 

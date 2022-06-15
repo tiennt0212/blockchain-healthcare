@@ -1,5 +1,5 @@
 // import styled from 'styled-components';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Radio } from 'antd';
 import { DatePicker } from 'components/DatePicker';
 // import { UserOutlined, LockOutlined } from '@ant-design/icons';
 // import { Alert } from 'antd';
@@ -11,8 +11,11 @@ import { useState } from 'react';
 import { useDispatch } from 'hooks';
 import dayjs from 'dayjs';
 import { METAHEALTHID } from 'utils/constants';
+import { useHistory } from 'react-router-dom';
+import { ROUTES } from 'utils/routeConstants';
 export const SignUp = () => {
   const { Item } = Form;
+  const history = useHistory();
   const { registerProfile, getMetaData } = useDispatch(({ metaHealth }) => ({
     registerProfile: metaHealth.registerProfile,
     getMetaData: metaHealth.getMetaData,
@@ -29,14 +32,13 @@ export const SignUp = () => {
       }}
       onFinish={async (values) => {
         values.dateOfBirth = dayjs(values.dateOfBirth).format('YYYY-MM-DD');
-        registerProfile(values);
-        setCanDownloadKey(true);
-        // try {
-        //   await registerProfile(values);
-        //   setCanDownloadKey(true);
-        // } catch (error) {
-        //   // Not console.log anymore
-        // }
+        try {
+          const res = await registerProfile(values);
+          console.log(res);
+          if (res.data) setCanDownloadKey(true);
+        } catch (error) {
+          //
+        }
       }}
     >
       <Item label="Full Name" name="fullName">
@@ -50,6 +52,12 @@ export const SignUp = () => {
       </Item>
       <Item label="Address" name="address" rules={[{ required: true }]}>
         <Input placeholder="Your address" />
+      </Item>
+      <Item label="Account Type" name="accountType">
+        <Radio.Group>
+          <Radio value="personal">PERSONAL</Radio>
+          <Radio value="organization">ORGANIZATION</Radio>
+        </Radio.Group>
       </Item>
       <Item label=" ">
         {!canDownloadKey ? (
@@ -76,6 +84,7 @@ export const SignUp = () => {
                 console.log(data?.metadata);
                 downloadObjectAsJson(data?.profile, `${localStorage.getItem(METAHEALTHID)}.json`);
               });
+              history.push(ROUTES.HOMEPAGE);
             }}
           >
             Download Key
