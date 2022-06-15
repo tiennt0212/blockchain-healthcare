@@ -2,7 +2,7 @@
 
 services:
   jsprocessor:
-    image: STRANSACTION_PROCESSOR_IMAGE
+    image: $TRANSACTION_PROCESSOR_IMAGE
     container_name: $TRANSACTION_PROCESSOR_CONTAINER_NAME
     volumes:
       - $TRANSACTION_PROCESSOR_DIR:/processor

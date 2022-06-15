@@ -9,4 +9,6 @@ services:
     volumes:
       - $CRYPTO_IPFS_DIR:/home/charmcrypto/charm/charm-dev/HSEABE
     working_dir: /home/charmcrypto/charm/charm-dev/HSEABE
-    entrypoint: "python3 crypto-ipfs.py"
+    tty: true
+    # make && pip install . && python samples/main.py
+    # entrypoint: "python3 utils/crypto-flask.py"
